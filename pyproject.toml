@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iroc-ascend"
+version = "0.1.0"
+description = "Companion-computer and base-station software for the IRoC-U ASCEND drone."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "opencv-python>=4.8",
+  "Pillow>=10",
+  "PyYAML>=6",
+  "Flask>=2.2",
+]
+
+[project.optional-dependencies]
+flight = ["pymavlink>=2.4.40", "pyserial>=3.5"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+iroc = "iroc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

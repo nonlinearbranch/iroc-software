@@ -1,0 +1,72 @@
+arena:
+  width_m: 10.668
+  height_m: 7.62
+  origin_x_m: 0.0
+  origin_y_m: 0.0
+  boundary_margin_m: 0.75
+  map_resolution_m: 0.20
+  lane_spacing_m: 1.25
+  home_x_m: 0.75
+  home_y_m: 0.75
+camera:
+  source: opencv
+  device_index: 0
+  frame_dir: ""
+  width_px: 1280
+  height_px: 720
+  fps: 30
+  h_fov_deg: 62.2
+  v_fov_deg: 48.8
+vision:
+  detector: ORB
+  lr_size_px: 128
+  ratio_test: 0.75
+  min_good_matches: 18
+  min_inliers: 8
+  min_score: 0.70
+  tile_size_px: 420
+  tile_overlap_px: 140
+  max_detections_per_seed: 3
+  methods:
+    - area
+    - lanczos
+    - gaussian_area
+    - center_crop_area
+flight:
+  mode: sim
+  mavlink_url: udpin:127.0.0.1:14550
+  baud: 921600
+  takeoff_altitude_m: 2.5
+  survey_altitude_m: 3.0
+  max_xy_velocity_mps: 0.8
+  goto_timeout_s: 18.0
+  waypoint_tolerance_m: 0.35
+  land_timeout_s: 45.0
+comms:
+  base_url: http://127.0.0.1:5050
+  bind_host: 0.0.0.0
+  port: 5050
+  transfer_dir: runs/base_station
+  timeout_s: 5.0
+safety:
+  min_battery_v: 21.6
+  critical_battery_v: 20.4
+  min_battery_pct: 25.0
+  critical_battery_pct: 15.0
+  max_link_age_s: 2.0
+  max_estimator_age_s: 0.75
+  max_speed_mps: 1.8
+  boundary_action_margin_m: 0.35
+power:
+  mode: sim
+  serial_url: COM5
+  baud: 9600
+  read_timeout_s: 1.0
+  charge_confirm_timeout_s: 20.0
+  min_charge_current_a: 0.25
+  min_soc_increase_pct: 0.2
+storage:
+  run_root: runs
+  keep_full_hd: true
+  jpeg_quality: 92
+  max_cached_frames: 12
