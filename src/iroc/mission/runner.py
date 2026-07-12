@@ -190,7 +190,7 @@ class MissionRunner:
     def _handle_safety(self, event: SafetyEvent) -> bool:
         if event.action is SafetyAction.HOLD:
             self.flight.hold()
-            return False
+            return event.severity >= 2
         if event.action is SafetyAction.RETURN_HOME:
             self._return_and_land()
             return True

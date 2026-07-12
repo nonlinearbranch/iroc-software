@@ -16,8 +16,8 @@ This repository implements the software side as a companion-computer stack:
 ## Runtime Modes
 
 - `sim`: no hardware required. Uses a simulated flight controller and optionally a directory of images.
-- `bench`: same software path as `sim`, but intended for live camera/base-station tests without arming.
-- `flight`: uses `pymavlink` to command ArduPilot in guided local-NED mode.
+- `bench`: same software path as `sim`, but intended for live camera/base-station/power tests without arming.
+- `flight`: targets the Jetson CUDA companion profile and uses `pymavlink` to command ArduPilot in guided local-NED mode.
 
 ## Boundary Strip Logic
 
@@ -47,6 +47,8 @@ The pipeline follows the rulebook's HD-to-LR matching requirement:
 ## Flight Control Boundary
 
 The companion sends local-NED position targets to ArduPilot. It does not try to replace the flight controller's attitude loop. This is intentional: Pixhawk/Cube runs hard real-time control, while the companion is allowed to be slower and more failure-tolerant.
+
+The repository does not implement LQR inner-loop attitude control. See [CONSISTENCY_AUDIT.md](CONSISTENCY_AUDIT.md) for the explicit control-scope decision.
 
 ## Data Products
 

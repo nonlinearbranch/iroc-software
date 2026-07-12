@@ -55,4 +55,4 @@ To independently validate a transferred mission report on the base station:
 python -m iroc.cli base-validate --config config/vehicle.example.yaml --seed-dir path\to\seeds --report runs\mission_x\mission_report.json --image-dir runs\base_station\images
 ```
 
-Read [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md) and [docs/BRINGUP_CHECKLIST.md](docs/BRINGUP_CHECKLIST.md) before connecting to real hardware.
+Read [docs/SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md), [docs/CONSISTENCY_AUDIT.md](docs/CONSISTENCY_AUDIT.md), [docs/ARDUPILOT_INTEGRATION.md](docs/ARDUPILOT_INTEGRATION.md), and [docs/BRINGUP_CHECKLIST.md](docs/BRINGUP_CHECKLIST.md) before connecting to real hardware.

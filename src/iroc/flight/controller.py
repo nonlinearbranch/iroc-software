@@ -112,6 +112,8 @@ class PymavlinkFlightController:
         self.master = None
         self._mavutil = None
         self._last_telemetry = Telemetry()
+        self._last_heartbeat_s = 0.0
+        self._last_local_position_s = 0.0
 
     def connect(self) -> None:
         try:
@@ -120,6 +122,9 @@ class PymavlinkFlightController:
             raise RuntimeError("Install pymavlink on the companion computer for real flight mode") from exc
         self.master = self._mavutil.mavlink_connection(self.config.mavlink_url, baud=self.config.baud)
         self.master.wait_heartbeat(timeout=10)
+        now = time.time()
+        self._last_heartbeat_s = now
+        self._last_local_position_s = now
         LOG.info("MAVLink heartbeat from system %s component %s", self.master.target_system, self.master.target_component)
 
     def telemetry(self) -> Telemetry:
@@ -134,6 +139,7 @@ class PymavlinkFlightController:
             if msg_type == "LOCAL_POSITION_NED":
                 self._last_telemetry.pose = PoseNED(float(msg.x), float(msg.y), float(msg.z), self._last_telemetry.pose.yaw_rad)
                 self._last_telemetry.velocity = VelocityNED(float(msg.vx), float(msg.vy), float(msg.vz))
+                self._last_local_position_s = time.time()
             elif msg_type == "ATTITUDE":
                 self._last_telemetry.pose.yaw_rad = float(msg.yaw)
             elif msg_type == "BATTERY_STATUS":
@@ -145,8 +151,12 @@ class PymavlinkFlightController:
             elif msg_type == "HEARTBEAT":
                 self._last_telemetry.armed = bool(msg.base_mode & self._mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
                 self._last_telemetry.mode = self._mavutil.mode_string_v10(msg)
-                self._last_telemetry.link_age_s = 0.0
-        self._last_telemetry.timestamp_s = time.time()
+                self._last_heartbeat_s = time.time()
+        now = time.time()
+        self._last_telemetry.link_age_s = now - self._last_heartbeat_s if self._last_heartbeat_s else 999.0
+        self._last_telemetry.estimator_age_s = now - self._last_local_position_s if self._last_local_position_s else 999.0
+        self._last_telemetry.estimator_ok = self._last_telemetry.estimator_age_s < 1.0
+        self._last_telemetry.timestamp_s = now
         return self._last_telemetry
 
     def arm(self) -> None:

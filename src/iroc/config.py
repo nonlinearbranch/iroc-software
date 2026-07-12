@@ -36,6 +36,16 @@ class CameraConfig:
 
 
 @dataclass(slots=True)
+class CompanionConfig:
+    platform: str = "jetson_orin_nano"
+    accelerator: str = "cuda"
+    require_accelerator_in_flight: bool = True
+    depth_model_enabled: bool = False
+    depth_model_path: str = ""
+    depth_runtime: str = "onnxruntime-gpu"
+
+
+@dataclass(slots=True)
 class VisionConfig:
     detector: str = "ORB"
     lr_size_px: int = 128
@@ -105,6 +115,7 @@ class StorageConfig:
 @dataclass(slots=True)
 class SystemConfig:
     arena: ArenaConfig = field(default_factory=ArenaConfig)
+    companion: CompanionConfig = field(default_factory=CompanionConfig)
     camera: CameraConfig = field(default_factory=CameraConfig)
     vision: VisionConfig = field(default_factory=VisionConfig)
     flight: FlightConfig = field(default_factory=FlightConfig)

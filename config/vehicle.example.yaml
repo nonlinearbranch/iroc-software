@@ -8,6 +8,13 @@ arena:
   lane_spacing_m: 1.25
   home_x_m: 0.75
   home_y_m: 0.75
+companion:
+  platform: jetson_orin_nano
+  accelerator: cuda
+  require_accelerator_in_flight: true
+  depth_model_enabled: false
+  depth_model_path: ""
+  depth_runtime: onnxruntime-gpu
 camera:
   source: opencv
   device_index: 0
